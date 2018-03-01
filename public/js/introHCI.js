@@ -2,25 +2,50 @@
 
 // Call this function when the page loads (the "ready" event)
 $(document).ready(function() {
-  initializePage();
+    initializePage();
 })
 
 /*
  * Function that is called when the document is ready.
  */
 function initializePage() {
-	console.log("Page ready");
- 	initCamera();
- 	initGestures();
- 	initRSVPForm();
+    console.log("Page ready");
+    initCamera();
+    initGestures();
+    initRSVPForm();
+
 }
 
 // init jQuery gestures  
 function initGestures() {
-	// add gestures listener here
+    // add gestures listener here
+    $("img").bind("taphold", tapholdHandler);
 }
 
 // init RSVP form submit listener
 function initRSVPForm() {
-  // add your code here
+    // add your code here
+}
+
+function tapholdHandler(event) {
+    //get id
+    var targetIDPrefix = event.target.id;
+    console.log("got prefix: " + targetIDPrefix);
+    //show bio
+    $("#" + targetIDPrefix + "-bio").show();
+}
+
+function initRSVPForm() {
+    $('#rsvpForm').submit(function(e) {
+
+        e.preventDefault();
+        console.log("submitting form...");
+        var rsvpEmail = $('#rsvpEmail').val();
+        $.post('addRSVP', {rsvpEmail: rsvpEmail}, postCalback);
+    });
+
+    function postCallback(res) {
+        alert("RSVP form successfully submitted!");
+        $('#rsvpEmail').val('');
+    }
 }
